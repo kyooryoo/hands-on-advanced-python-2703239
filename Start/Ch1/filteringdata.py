@@ -10,12 +10,19 @@ with open("../../sample-weather-history.json", "r") as weatherfile:
 
 # the filter() function gives us a way to remove unwanted data points
 # TODO: create a subset of the data for days that had snowfall
-
+snowdays = list(filter(lambda d:d['snow'] > 0.0, weatherdata))
+print(f"{len(snowdays)} out of {len(weatherdata)} snowed")
 
 # TODO: pretty-print the resulting data set
-
+pprint.pp(snowdays)
 
 # filter can also be used on non-numerical data, like strings
 # TODO: create a subset that contains summer days with heavy rain (more than 1 in, about 2.5cm)
 def is_summer_rain_day(d):
+    summer_month = ["-07-","-08-"]
+    if any([m in d['date'] for m in summer_month]) and d['prcp'] >= 1.0:
+        return True
     return False
+
+summer_rain_days = list(filter(is_summer_rain_day, weatherdata))
+print(f"There were {len(summer_rain_days)} days in summer had heavy rain")
