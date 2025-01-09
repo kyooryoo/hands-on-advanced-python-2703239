@@ -3,6 +3,7 @@
 
 import json
 import pprint
+from collections import defaultdict
 
 
 # open the sample weather data file and use the json module to load and parse it
@@ -11,12 +12,20 @@ with open("../../sample-weather-history.json", "r") as weatherfile:
 
 # The defaultdict collection provides a cleaner way of initializing key values
 # TODO: Count the number of data points for each year we have data
-
+years = defaultdict(int)
+for d in weatherdata:
+    key = d['date'][:4]
+    years[key] += 1
+pprint.pp(years)
 
 # TODO: defaultdict can use more complex objects, like lists
-
+years_months = defaultdict(list)
 # TODO: create a dictionary with year-month keys and lists for each day in the month
-
+for d in weatherdata:
+    key = d['date'][:7]
+    years_months[key].append(d)
+pprint.pp(years_months)
+pprint.pp(len(years_months))
 
 # What were the coldest and warmest days of each month?
 def warmest_day(month):
@@ -28,3 +37,6 @@ def coldest_day(month):
     return (cd['date'], cd['tmin'])
 
 # TODO: loop over the keys of the dictionary and find each warmest and coldest day
+for year_month, daylist in years_months.items():
+    print(f"Warmest day in {year_month}: {warmest_day(daylist)}")
+    print(f"Coldest day in {year_month}: {coldest_day(daylist)}")
